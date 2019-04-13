@@ -1,7 +1,9 @@
 import os
 
-from flask import Flask
+
+from flask import Flask, request,jsonify
 from flask_cors import CORS
+
 
 
 def create_app(test_config=None):
@@ -31,6 +33,13 @@ def create_app(test_config=None):
     def hello():
         from . import db
         return db.connect()
+
+    @app.route('/recieve', methods=['POST'])
+    def add():
+        print("hello")
+        data = jsonify(request.get_json())
+        print(data)
+        return "Hello"
 
     from . import returnData
     app.register_blueprint(returnData.bp)
