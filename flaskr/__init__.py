@@ -34,12 +34,13 @@ def create_app(test_config=None):
         from . import db
         return db.connect()
 
-    @app.route('/recieve', methods=['POST'])
+    @app.route('/receive', methods=['POST'])
     def add():
-        print("hello")
-        data = jsonify(request.get_json())
+        data = request.get_json()
         print(data)
-        return "Hello"
+        data = jsonify(data)
+        print(data)
+        return "Success"
 
     from . import returnData
     app.register_blueprint(returnData.bp)
