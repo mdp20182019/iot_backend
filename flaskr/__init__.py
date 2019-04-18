@@ -29,10 +29,12 @@ def create_app(test_config=None):
         pass
 
     # a simple page that says hello
-    @app.route('/hello')
+    @app.route('/send')
     def hello():
         from . import db
-        return db.connect()
+        db.sendData()
+        data={"Message":"Success"}
+        return jsonify(data)
 
     @app.route('/receive', methods=['POST'])
     def add():

@@ -23,36 +23,25 @@ def connect():
         ssl_cert_reqs=ssl.CERT_NONE)
     print("Connected to mongo")
 
-    # -----------------------------------------------------------------------------
-    # Getting a database
-    # -----------------------------------------------------------------------------
-
     db = client.test
 
-    # -----------------------------------------------------------------------------
-    # Creating a test document
-    # -----------------------------------------------------------------------------
+    posts = db.posts
+    return posts
 
+
+def sendData():
     post = {
-        "location": "France",
+        "location": "Danemark",
         "packetNumber": "145sd5"
     }
+    collection_instance = connect()
+    post_id = collection_instance.insert_one(post).inserted_id
 
-    # -----------------------------------------------------------------------------
-    # Inserting in the mongo database
-    # -----------------------------------------------------------------------------
-
-    posts = db.posts
-    post_id = posts.insert_one(post).inserted_id
-    ret = posts.find_one({"Name": "Mansour"})
-    del ret["_id"]
-    print(ret)
-    return dumps(ret)
-
-
-
-
-
+def getData():
+    collection_instance = connect()
+    data = list(collection_instance.find({"deviceName": "mario"}))
+    print(data)
+    return dumps(data)
 
 
 
