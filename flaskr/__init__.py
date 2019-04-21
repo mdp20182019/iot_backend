@@ -38,11 +38,11 @@ def create_app(test_config=None):
 
     @app.route('/login', methods=['POST'])
     def login():
+        from . import db
         data = request.get_json()
         print(data)
-        data = jsonify(data)
-        print(data)
-        return jsonify("Success")
+        result=db.login(data)
+        return jsonify(result)
 
     @app.route('/receive', methods=['POST'])
     def add():
