@@ -33,8 +33,16 @@ def create_app(test_config=None):
     def hello():
         from . import db
         db.sendData()
-        data={"Message":"Success"}
+        data={"Message": "Success"}
         return jsonify(data)
+
+    @app.route('/login', methods=['POST'])
+    def login():
+        data = request.get_json()
+        print(data)
+        data = jsonify(data)
+        print(data)
+        return jsonify("Success")
 
     @app.route('/receive', methods=['POST'])
     def add():
