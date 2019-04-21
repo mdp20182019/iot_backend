@@ -44,6 +44,13 @@ def create_app(test_config=None):
         result=db.login(data)
         return jsonify(result)
 
+
+    @app.route('/getdata')
+    def getdata():
+        from . import db
+        db.get_documents("mesureAck100")
+
+
     @app.route('/receive', methods=['POST'])
     def add():
         data = request.get_json()

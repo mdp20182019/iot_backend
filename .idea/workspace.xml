@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d85bee92-142a-4efe-9a7a-f11679d6b8c7" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/flaskr/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/flaskr/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/flaskr/db.py" beforeDir="false" afterPath="$PROJECT_DIR$/flaskr/db.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/pip-selfcheck.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/pip-selfcheck.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,7 +17,7 @@
     <session id="-1447618154">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="11" />
+          <entry key="project.closed" value="12" />
           <entry key="project.open.time.1" value="2" />
           <entry key="project.open.time.21" value="1" />
           <entry key="project.open.time.38" value="1" />
@@ -24,9 +26,10 @@
           <entry key="project.open.time.45" value="2" />
           <entry key="project.open.time.48" value="1" />
           <entry key="project.open.time.52" value="1" />
+          <entry key="project.open.time.54" value="1" />
           <entry key="project.open.time.60" value="1" />
           <entry key="project.open.time.82" value="1" />
-          <entry key="project.opened" value="12" />
+          <entry key="project.opened" value="13" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -43,12 +46,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="1687" />
+          <entry key="py" value="2130" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="1687" />
+          <entry key="Python" value="2130" />
         </counts>
       </usages-collector>
     </session>
@@ -58,11 +61,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/flaskr/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="232">
-              <caret line="45" lean-forward="true" selection-start-line="45" selection-end-line="45" />
+            <state relative-caret-position="325">
+              <caret line="52" lean-forward="true" selection-start-line="52" selection-end-line="52" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
-                <marker date="1555823415000" expanded="true" signature="1001:1122" ph="..." />
+                <marker date="1555860398000" expanded="true" signature="1164:1237" ph="..." />
               </folding>
             </state>
           </provider>
@@ -80,13 +83,13 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/flaskr/db.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="311">
-              <caret line="46" lean-forward="true" selection-start-line="46" selection-end-line="46" />
+            <state relative-caret-position="112">
+              <caret line="61" column="124" lean-forward="true" selection-start-line="61" selection-start-column="4" selection-end-line="61" selection-end-column="124" />
               <folding>
                 <element signature="e#378#392#0" expanded="true" />
-                <marker date="1555823945000" expanded="true" signature="683:989" ph="..." />
-                <marker date="1555823945000" expanded="true" signature="1212:1628" ph="..." />
-                <marker date="1555823945000" expanded="true" signature="1212:1629" ph="..." />
+                <marker date="1555865531000" expanded="true" signature="698:1085" ph="..." />
+                <marker date="1555865531000" expanded="true" signature="1308:2072" ph="..." />
+                <marker date="1555865531000" expanded="true" signature="1308:2073" ph="..." />
               </folding>
             </state>
           </provider>
@@ -95,8 +98,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/mqttLogger/mqtt.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="464">
-              <caret line="41" column="21" lean-forward="true" selection-start-line="41" selection-start-column="21" selection-end-line="41" selection-end-column="21" />
+            <state relative-caret-position="555">
+              <caret line="41" column="21" selection-start-line="41" selection-start-column="21" selection-end-line="41" selection-end-column="21" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -256,6 +259,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="18" y="29" width="1260" height="669" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19774011" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -268,7 +272,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.21490468" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.51993066" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.32928944" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -289,8 +293,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/mqttLogger/mqtt.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="464">
-          <caret line="41" column="21" lean-forward="true" selection-start-line="41" selection-start-column="21" selection-end-line="41" selection-end-column="21" />
+        <state relative-caret-position="555">
+          <caret line="41" column="21" selection-start-line="41" selection-start-column="21" selection-end-line="41" selection-end-column="21" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
@@ -309,24 +313,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/flaskr/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="232">
-          <caret line="45" lean-forward="true" selection-start-line="45" selection-end-line="45" />
+        <state relative-caret-position="325">
+          <caret line="52" lean-forward="true" selection-start-line="52" selection-end-line="52" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
-            <marker date="1555823415000" expanded="true" signature="1001:1122" ph="..." />
+            <marker date="1555860398000" expanded="true" signature="1164:1237" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/flaskr/db.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="46" lean-forward="true" selection-start-line="46" selection-end-line="46" />
+        <state relative-caret-position="112">
+          <caret line="61" column="124" lean-forward="true" selection-start-line="61" selection-start-column="4" selection-end-line="61" selection-end-column="124" />
           <folding>
             <element signature="e#378#392#0" expanded="true" />
-            <marker date="1555823945000" expanded="true" signature="683:989" ph="..." />
-            <marker date="1555823945000" expanded="true" signature="1212:1628" ph="..." />
-            <marker date="1555823945000" expanded="true" signature="1212:1629" ph="..." />
+            <marker date="1555865531000" expanded="true" signature="698:1085" ph="..." />
+            <marker date="1555865531000" expanded="true" signature="1308:2072" ph="..." />
+            <marker date="1555865531000" expanded="true" signature="1308:2073" ph="..." />
           </folding>
         </state>
       </provider>

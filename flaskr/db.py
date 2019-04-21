@@ -10,6 +10,7 @@
 
 import pymongo
 import ssl
+import isodate
 from bson.json_util import dumps
 
 
@@ -24,9 +25,11 @@ def connect(collection):
     db = client.test
     if(collection=="users"):
         return db.users
+    if(collection=="mesureAck100"):
+        return db.mesureAck100
 
-    posts = db.posts
-    return posts
+    dbcollection = db.posts
+    return dbcollection
 
 
 def sendData():
@@ -51,6 +54,16 @@ def login(data):
     if users_collection.count_documents({'username': data['username'], 'password':data['password']}, limit=1) != 0:
         return "Success"
     return "Fail"
+
+def get_documents(collection_name):
+    mesureAck100="mesureAck100"
+    collection= connect(mesureAck100)
+    print("hhhhhh")
+    l=list(collection.find(({ 'rxInfo.0.time':{'$gt':"2019-04-18T10:57:49.138935Z", '$lt':"2019-04-18T10:59:08.604025Z"}})))
+    print(l)
+
+# {'$gte':("2019-04-18T10:57:49.138935Z"),'$lt':("2019-04-18T10:59:08.604025Z")}
+
 
 
 
