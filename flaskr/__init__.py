@@ -49,6 +49,7 @@ def create_app(test_config=None):
     def getdata():
         from . import db
         db.get_documents("mesureAck100")
+        return "ok"
 
 
     @app.route('/receive', methods=['POST'])

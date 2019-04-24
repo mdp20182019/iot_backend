@@ -10,7 +10,6 @@
 
 import pymongo
 import ssl
-import isodate
 from bson.json_util import dumps
 
 
@@ -61,6 +60,8 @@ def get_documents(collection_name):
     print("hhhhhh")
     l=list(collection.find(({ 'rxInfo.0.time':{'$gt':"2019-04-18T10:57:49.138935Z", '$lt':"2019-04-18T10:59:08.604025Z"}})))
     print(l)
+    print(len(l))
+    return "ok"
 
 # {'$gte':("2019-04-18T10:57:49.138935Z"),'$lt':("2019-04-18T10:59:08.604025Z")}
 
