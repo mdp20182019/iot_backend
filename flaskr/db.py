@@ -10,7 +10,9 @@
 
 import pymongo
 import ssl
+import base64
 from bson.json_util import dumps
+import json
 
 
 # -----------------------------------------------------------------------------
@@ -54,18 +56,72 @@ def login(data):
         return "Success"
     return "Fail"
 
-def get_documents(collection_name):
+def get_documents(collection_name,startDate,endDate):
     mesureAck100="mesureAck100"
     collection= connect(mesureAck100)
-    print("hhhhhh")
-    l=list(collection.find(({ 'rxInfo.0.time':{'$gt':"2019-04-18T10:57:49.138935Z", '$lt':"2019-04-18T10:59:08.604025Z"}})))
+    l=list(collection.find(({ 'rxInfo.0.time':{'$gt':startDate, '$lt':endDate}})))
     print(l)
-    print(len(l))
-    return "ok"
-
-# {'$gte':("2019-04-18T10:57:49.138935Z"),'$lt':("2019-04-18T10:59:08.604025Z")}
+    l = processDocuments(l)
+    return l
 
 
+def getMeasureJson(startDate,endDate):
+    collection = connect("mesureAck100")
+    l=get_documents(collection,startDate,endDate)
+    return l
+
+def statistic(rep):
+    dict={0:0,1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0}
+    for i in rep:
+        dict[i]=dict[i]+1
+    return dict
+
+def packetloss(fcnt):
+    fcnt.sort
+    j = 0
+    i = fcnt[j]
+    loss = []
+    counter = 0
+    while (j < len(fcnt)):
+        if (i != fcnt[j]):
+            counter += 1
+            loss.append(0)
+        if (i == fcnt[j]):
+            loss.append(1)
+            j += 1
+        i = i + 1
+    counter = counter*100/len(fcnt)
+    l={'loss':loss,'pourcentage':counter}
+    return l
+
+
+def cleanData(l):
+    for i in l:
+        del i['_id']
+    return l
+
+
+def processDocuments(l):
+    fcnt = []
+    rep = []
+    j=0
+    for i in l:
+        if 'fCnt' in i:
+            fcnt.append(i['fCnt'])
+
+    while (j < len(l)):
+        rep.append(int(base64.b64decode(l[j]['data']).decode('utf-8')))
+        j += 1
+
+    stat = statistic(rep)
+
+    packetLoss = packetloss(fcnt)
+
+    l = cleanData(l)
+    result = {'data':l,'packetloss':packetLoss,'stat':stat}
+    result=json.dumps(result)
+    print(result)
+    return result
 
 
 

@@ -60,6 +60,15 @@ def create_app(test_config=None):
         print(data)
         return "Success"
 
+    @app.route('/createMeasure', methods=['POST'])
+    def createMeasure():
+        from . import db
+        data = request.get_json()
+        print(data)
+        result = db.getMeasureJson(data['startDate'],data['endDate'])
+        print("Success")
+        return jsonify(result)
+
     from . import returnData
     app.register_blueprint(returnData.bp)
 
