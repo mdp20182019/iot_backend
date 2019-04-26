@@ -65,7 +65,7 @@ def create_app(test_config=None):
         from . import db
         data = request.get_json()
         print(data)
-        result = db.getMeasureJson(data['startDate'],data['endDate'])
+        result = db.getMeasureJson(data['startDate'],data['endDate'],data['MeasureName'])
         print("Success")
         return jsonify(result)
 

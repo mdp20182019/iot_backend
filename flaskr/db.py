@@ -27,9 +27,10 @@ def connect(collection):
     if(collection=="users"):
         return db.users
     if(collection=="mesureAck100"):
-        return db.mesureAck100
+        return db.mesureAck1000
 
     dbcollection = db.posts
+    print("Connected to mongoDb")
     return dbcollection
 
 
@@ -56,27 +57,27 @@ def login(data):
         return "Success"
     return "Fail"
 
-def get_documents(collection_name,startDate,endDate):
+def get_documents(collection_name,startDate,endDate,MeasureName):
     mesureAck100="mesureAck100"
     collection= connect(mesureAck100)
     l=list(collection.find(({ 'rxInfo.0.time':{'$gt':startDate, '$lt':endDate}})))
     print(l)
-    l = processDocuments(l)
+    l = processDocuments(l,MeasureName)
     return l
 
 
-def getMeasureJson(startDate,endDate):
+def getMeasureJson(startDate,endDate,MeasureName):
     collection = connect("mesureAck100")
-    l=get_documents(collection,startDate,endDate)
+    l=get_documents(collection,startDate,endDate,MeasureName)
     return l
 
-def statistic(rep):
+def statistic(rep,MeasureName):
     dict={0:0,1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0}
     for i in rep:
         dict[i]=dict[i]+1
-    return dict
+    return {'dict':dict,'saveName':MeasureName+"/stat"}
 
-def packetloss(fcnt):
+def packetloss(fcnt,MeasureName):
     fcnt.sort
     j = 0
     i = fcnt[j]
@@ -91,7 +92,7 @@ def packetloss(fcnt):
             j += 1
         i = i + 1
     counter = counter*100/len(fcnt)
-    l={'loss':loss,'pourcentage':counter}
+    l={'loss':loss,'pourcentage':counter,'saveName':MeasureName+'/loss'}
     return l
 
 
@@ -101,7 +102,7 @@ def cleanData(l):
     return l
 
 
-def processDocuments(l):
+def processDocuments(l,MeasureName):
     fcnt = []
     rep = []
     j=0
@@ -113,9 +114,9 @@ def processDocuments(l):
         rep.append(int(base64.b64decode(l[j]['data']).decode('utf-8')))
         j += 1
 
-    stat = statistic(rep)
+    stat = statistic(rep,MeasureName)
 
-    packetLoss = packetloss(fcnt)
+    packetLoss = packetloss(fcnt,MeasureName)
 
     l = cleanData(l)
     result = {'data':l,'packetloss':packetLoss,'stat':stat}
