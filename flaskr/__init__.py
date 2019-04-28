@@ -60,14 +60,34 @@ def create_app(test_config=None):
         print(data)
         return "Success"
 
+    @app.route('/collectionsUrl')
+    def collectionsUrl():
+        from . import db
+        r = db.getCollectionsUrl()
+        return jsonify(r)
+
     @app.route('/createMeasure', methods=['POST'])
     def createMeasure():
         from . import db
         data = request.get_json()
         print(data)
-        result = db.getMeasureJson(data['startDate'],data['endDate'],data['MeasureName'])
+        result = db.getMeasureJson(data['startDate'],data['endDate'],data['MeasureName'],data['creator'])
         print("Success")
         return jsonify(result)
+
+    @app.route('/save', methods=['POST'])
+    def saveData():
+        from . import db
+        data = request.get_json()
+        db.saveToMongo(data)
+        print(data)
+        return jsonify("Success")
+
+    @app.route('/history')
+    def gethistory():
+        from . import db
+        r = db.getHistory()
+        return jsonify(r)
 
     from . import returnData
     app.register_blueprint(returnData.bp)

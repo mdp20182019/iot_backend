@@ -33,6 +33,13 @@ def connect(collection):
     print("Connected to mongoDb")
     return dbcollection
 
+def getTest():
+    client = pymongo.MongoClient(
+        "mongodb+srv://Student:MDPESIB2018-2019@iot-cluster-saur7.mongodb.net/test?retryWrites=true",
+        ssl=True,
+        ssl_cert_reqs=ssl.CERT_NONE)
+    db = client.test
+    return db
 
 def sendData():
     post = {
@@ -43,12 +50,19 @@ def sendData():
     collection_instance = connect(posts)
     post_id = collection_instance.insert_one(post).inserted_id
 
+def getHistory():
+    collection_instance = getTest()
+    collection_instance=collection_instance["history"]
+    data = list(collection_instance.find({}))
+    print(data)
+    return dumps(data)
+
 def getData():
     posts = "posts"
     collection_instance = connect(posts)
     data = list(collection_instance.find({"deviceName": "mario"}))
     print(data)
-    return dumps(data)
+    return json.dumps(data)
 
 def login(data):
     users="users"
@@ -57,18 +71,18 @@ def login(data):
         return "Success"
     return "Fail"
 
-def get_documents(collection_name,startDate,endDate,MeasureName):
+def get_documents(collection_name,startDate,endDate,MeasureName,id):
     mesureAck100="mesureAck100"
     collection= connect(mesureAck100)
     l=list(collection.find(({ 'rxInfo.0.time':{'$gt':startDate, '$lt':endDate}})))
     print(l)
-    l = processDocuments(l,MeasureName)
+    l = processDocuments(l,MeasureName,id)
     return l
 
 
-def getMeasureJson(startDate,endDate,MeasureName):
+def getMeasureJson(startDate,endDate,MeasureName,id):
     collection = connect("mesureAck100")
-    l=get_documents(collection,startDate,endDate,MeasureName)
+    l=get_documents(collection,startDate,endDate,MeasureName,id)
     return l
 
 def statistic(rep,MeasureName):
@@ -101,8 +115,17 @@ def cleanData(l):
         del i['_id']
     return l
 
+def getCollectionsUrl():
+    nameOfDatabase = getTest()
+    collections = nameOfDatabase.list_collection_names()
+    return collections
 
-def processDocuments(l,MeasureName):
+def saveToMongo(data):
+    collection = getTest()
+    db=collection["history"]
+    post_id = db.insert_one(data).inserted_id
+
+def processDocuments(l,MeasureName,id):
     fcnt = []
     rep = []
     j=0
@@ -119,7 +142,7 @@ def processDocuments(l,MeasureName):
     packetLoss = packetloss(fcnt,MeasureName)
 
     l = cleanData(l)
-    result = {'data':l,'packetloss':packetLoss,'stat':stat}
+    result = {'data':l,'packetloss':packetLoss,'stat':stat,'identifier':MeasureName+"Data",'id':id}
     result=json.dumps(result)
     print(result)
     return result
