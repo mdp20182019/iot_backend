@@ -42,6 +42,8 @@ def create_app(test_config=None):
         data = request.get_json()
         print(data)
         result=db.login(data)
+        print("?????????????????")
+        print(result)
         return jsonify(result)
 
 
@@ -71,7 +73,7 @@ def create_app(test_config=None):
         from . import db
         data = request.get_json()
         print(data)
-        result = db.getMeasureJson(data['startDate'],data['endDate'],data['MeasureName'],data['creator'])
+        result = db.getMeasureJson(data['startDate'],data['endDate'],data['MeasureName'],data['creator'],data['TypeOfMeasure'])
         print("Success")
         return jsonify(result)
 
@@ -87,6 +89,7 @@ def create_app(test_config=None):
     def gethistory():
         from . import db
         r = db.getHistory()
+        print(type(r))
         return jsonify(r)
 
     from . import returnData

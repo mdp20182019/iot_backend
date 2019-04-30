@@ -24,12 +24,7 @@ def connect(collection):
         ssl=True,
         ssl_cert_reqs=ssl.CERT_NONE)
     db = client.test
-    if(collection=="users"):
-        return db.users
-    if(collection=="mesureAck100"):
-        return db.mesureAck1000
-
-    dbcollection = db.posts
+    dbcollection = db[collection]
     print("Connected to mongoDb")
     return dbcollection
 
@@ -54,8 +49,10 @@ def getHistory():
     collection_instance = getTest()
     collection_instance=collection_instance["history"]
     data = list(collection_instance.find({}))
-    print(data)
-    return dumps(data)
+    for i in data:
+        del i['_id']
+    data = json.dumps(data)
+    return data
 
 def getData():
     posts = "posts"
@@ -72,16 +69,14 @@ def login(data):
     return "Fail"
 
 def get_documents(collection_name,startDate,endDate,MeasureName,id):
-    mesureAck100="mesureAck100"
-    collection= connect(mesureAck100)
-    l=list(collection.find(({ 'rxInfo.0.time':{'$gt':startDate, '$lt':endDate}})))
+    l=list(collection_name.find(({ 'rxInfo.0.time':{'$gt':startDate, '$lt':endDate}})))
     print(l)
     l = processDocuments(l,MeasureName,id)
     return l
 
 
-def getMeasureJson(startDate,endDate,MeasureName,id):
-    collection = connect("mesureAck100")
+def getMeasureJson(startDate,endDate,MeasureName,id,collectionName):
+    collection = connect(collectionName)
     l=get_documents(collection,startDate,endDate,MeasureName,id)
     return l
 
