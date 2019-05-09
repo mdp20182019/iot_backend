@@ -14,6 +14,8 @@ import base64
 from bson.json_util import dumps
 import json
 
+l=['NoAckL','NoAckM','NoAckH','AckL','AckM','AckH','RedL','RedM','RedH']
+
 
 # -----------------------------------------------------------------------------
 # Creating a Mongo Client and connecting it to our database
@@ -58,7 +60,7 @@ def getData():
     posts = "posts"
     collection_instance = connect(posts)
     data = list(collection_instance.find({"deviceName": "mario"}))
-    print(data)
+    # print(data)
     return json.dumps(data)
 
 def login(data):
@@ -70,7 +72,7 @@ def login(data):
 
 def get_documents(collection_name,startDate,endDate,MeasureName,id):
     l=list(collection_name.find(({ 'rxInfo.0.time':{'$gt':startDate, '$lt':endDate}})))
-    print(l)
+    # print(l)
     l = processDocuments(l,MeasureName,id)
     return l
 
@@ -101,9 +103,11 @@ def packetloss(fcnt,MeasureName):
             j += 1
         i = i + 1
     counter = counter*100/len(fcnt)
-    l={'loss':loss,'pourcentage':counter,'saveName':MeasureName+'/loss'}
+    l={'loss':loss,'saveName':MeasureName+'/loss'}
     return l
 
+def packetlossForMainMeasure(fcnt):
+    return (900-len(fcnt))/9
 
 def cleanData(l):
     for i in l:
@@ -127,20 +131,28 @@ def processDocuments(l,MeasureName,id):
     for i in l:
         if 'fCnt' in i:
             fcnt.append(i['fCnt'])
+    print(len(l))
 
     while (j < len(l)):
         rep.append(int(base64.b64decode(l[j]['data']).decode('utf-8')))
         j += 1
 
     stat = statistic(rep,MeasureName)
-
-    packetLoss = packetloss(fcnt,MeasureName)
+    dicto=packetloss(fcnt,MeasureName)
+    packetLoss = packetlossForMainMeasure(fcnt)
+    dicto['pourcentage']=packetLoss
 
     l = cleanData(l)
-    result = {'data':l,'packetloss':packetLoss,'stat':stat,'identifier':MeasureName+"Data",'id':id}
+    result = {'data':l,'packetloss':dicto,'stat':stat,'identifier':MeasureName+"Data",'id':id}
     result=json.dumps(result)
-    print(result)
+    # print(result)
     return result
+
+
+def getMainMeasureData(data):
+
+    return 1
+
 
 
 

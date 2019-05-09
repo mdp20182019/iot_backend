@@ -3,6 +3,7 @@ import os
 
 from flask import Flask, request,jsonify
 from flask_cors import CORS
+from . import db
 
 
 
@@ -31,14 +32,12 @@ def create_app(test_config=None):
     # a simple page that says hello
     @app.route('/send')
     def hello():
-        from . import db
         db.sendData()
         data={"Message": "Success"}
         return jsonify(data)
 
     @app.route('/login', methods=['POST'])
     def login():
-        from . import db
         data = request.get_json()
         print(data)
         result=db.login(data)
@@ -49,9 +48,17 @@ def create_app(test_config=None):
 
     @app.route('/getdata')
     def getdata():
-        from . import db
         db.get_documents("mesureAck100")
         return "ok"
+
+    @app.route('/createMainMeasure', methods=['POST'])
+    def createMainMeasure():
+        data = request.get_json()
+        print(data)
+        db.getMainMeasureData(data)
+        i=1;
+        return jsonify(i)
+
 
 
     @app.route('/receive', methods=['POST'])
@@ -64,13 +71,11 @@ def create_app(test_config=None):
 
     @app.route('/collectionsUrl')
     def collectionsUrl():
-        from . import db
         r = db.getCollectionsUrl()
         return jsonify(r)
 
     @app.route('/createMeasure', methods=['POST'])
     def createMeasure():
-        from . import db
         data = request.get_json()
         print(data)
         result = db.getMeasureJson(data['startDate'],data['endDate'],data['MeasureName'],data['creator'],data['TypeOfMeasure'])
@@ -79,7 +84,6 @@ def create_app(test_config=None):
 
     @app.route('/save', methods=['POST'])
     def saveData():
-        from . import db
         data = request.get_json()
         db.saveToMongo(data)
         print(data)
@@ -87,7 +91,6 @@ def create_app(test_config=None):
 
     @app.route('/history')
     def gethistory():
-        from . import db
         r = db.getHistory()
         print(type(r))
         return jsonify(r)
