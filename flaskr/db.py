@@ -12,8 +12,10 @@ import pymongo
 import ssl
 import base64
 from bson.json_util import dumps
+import statistics
 import json
 
+list_of_Measure_collections=["Redund100Sf10","Redund100Sf10","Redund100Sf10","Redund50Sf10","Redund50Sf10","Redund50Sf10","mesureAck100","mesureAck100","mesureAck100"]
 l=['NoAckL','NoAckM','NoAckH','AckL','AckM','AckH','RedL','RedM','RedH']
 
 
@@ -149,11 +151,92 @@ def processDocuments(l,MeasureName,id):
     return result
 
 
+def getMainMeasureDataReturn(data):
+    return treatLists(getMainMeasureData(data))
+
+
+###########################################################################################################
+# Main Measure components
+
+def getDocuments(start,end,collection):
+    return list(collection.find(({ 'rxInfo.0.time':{'$gt':start, '$lt':end}})))
+
+
+def getFcnt(l):
+    fcnt=[]
+    for i in l:
+        if 'fCnt' in i:
+            fcnt.append(i['fCnt'])
+    return fcnt
+
 def getMainMeasureData(data):
+    TotalFcnt=[]
+    for i in list_of_Measure_collections:
+        collection = connect(i)
+        if(i=="Redund100Sf10" or i=="Redund100Sf10" or i=="Redund100Sf10"):
+            l=getDocuments(data['startDate_Ack'],data['endDate_Ack'],collection)
+        elif(i=="Redund50Sf10" or i=="Redund50Sf10" or i=="Redund50Sf10"):
+            l=getDocuments(data['startDate_NoAck'],data['endDate_NoAck'],collection)
+        else:
+            l=getDocuments(data['startDate_Red'],data['endDate_Red'],collection)
+        l = getFcnt(l)
+        TotalFcnt.append(l)
+    return TotalFcnt
 
-    return 1
+def treatLists(l):
+    ll=[]
+    for sublist in l:
+        ll.append(getStats(createBatches(sublist)))
+    return ll
+
+def createBatches(l):
+    dicto=[]
+    batchSize=10
+    ll=[]
+    for i in l:
+        if(batchSize==30):
+            ll.append(i)
+            dicto.append(ll)
+            return dicto
+        elif(i>=batchSize):
+            batchSize=batchSize+10
+            dicto.append(ll)
+            ll=[]
+        else:
+            ll.append(i)
+    return ll
 
 
+def getStats(l):
+    ll=[]
+    if(any(isinstance(el, list) for el in l)):
+        for sub in l:
+            ll.append(100-(len(sub)*100/30))
+        return minMaxMedianne(ll)
+    else:
+        return minMaxMedianne(100-(len(l)*100/30))
+
+
+
+def minMaxMedianne(l):
+    if(type(l)==float):
+            ll={}
+            ll['min']=l
+            ll['max']=l
+            ll['median']=l
+            ll['mean']=l
+            ll['pstdev']=l
+            return ll
+    else:
+            ll={}
+            ll['min']=min(l)
+            ll['max']=max(l)
+            ll['median']=statistics.median(l)
+            ll['mean']=statistics.mean(l)
+            ll['pstdev']=statistics.pstdev(l)
+            return ll
+
+###########################################################################################################
 
 
 

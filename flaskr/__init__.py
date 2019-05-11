@@ -55,9 +55,9 @@ def create_app(test_config=None):
     def createMainMeasure():
         data = request.get_json()
         print(data)
-        db.getMainMeasureData(data)
-        i=1;
-        return jsonify(i)
+        l=db.getMainMeasureDataReturn(data)
+        print(l)
+        return jsonify(l)
 
 
 
