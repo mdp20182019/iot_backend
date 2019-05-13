@@ -15,7 +15,7 @@ from bson.json_util import dumps
 import statistics
 import json
 
-list_of_Measure_collections=["Redund100Sf10","Redund100Sf10","Redund100Sf10","Redund50Sf10","Redund50Sf10","Redund50Sf10","mesureAck100","mesureAck100","mesureAck100"]
+list_of_Measure_collections=["NoAckL","NoAckM","NoAckH","AckL","AckL","AckL","RedL","RedM","RedH"]
 l=['NoAckL','NoAckM','NoAckH','AckL','AckM','AckH','RedL','RedM','RedH']
 
 
@@ -179,7 +179,7 @@ def treatLists(l):
         llll.append(repetition(sublist))
     for sublist in l:
         sublist= getFcnt(sublist)
-        ll.append(getStats(createBatches(sublist)))
+        ll.append(minMaxMedianne(getStats(createBatches(sublist))))
     dict['stats']=ll
     dict['count']=lll
     dict['repetition']=llll
@@ -200,31 +200,27 @@ def repetition(l):
 
 
 def createBatches(l):
-    dicto=[]
-    batchSize=10
+    final=[]
     ll=[]
+    size=30
     for i in l:
-        if(batchSize==30):
-            ll.append(i)
-            dicto.append(ll)
-            return dicto
-        elif(i>=batchSize):
-            batchSize=batchSize+10
-            dicto.append(ll)
+        if(i>size and i<900 and i>0):
+            size+=30
+            final.append(ll)
             ll=[]
-        else:
             ll.append(i)
-    return ll
+        elif(i<900 and i>0):
+            ll.append(i)
+    final.append(ll)
+    return final
 
 
 def getStats(l):
-    ll=[]
-    if(any(isinstance(el, list) for el in l)):
-        for sub in l:
-            ll.append(100-(len(sub)*100/30))
-        return minMaxMedianne(ll)
-    else:
-        return minMaxMedianne(100-(len(l)*100/30))
+    lll=[]
+    for subList in l:
+        gain=len(subList)*100/30
+        lll.append(gain)
+    return lll
 
 
 

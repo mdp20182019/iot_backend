@@ -26,7 +26,7 @@ def on_message(client, userdata, msg):
     received_data = base64.b64decode(m['data'])
     received_data
     print(received_data.decode('utf-8'))
-    posts = db.RedH
+    posts = db.AckL
     post_id = posts.insert_one(m).inserted_id
     print("Success")
 
