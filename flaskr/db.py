@@ -40,14 +40,6 @@ def getTest():
     db = client.test
     return db
 
-def sendData():
-    post = {
-        "location": "Danemark",
-        "packetNumber": "145sd5"
-    }
-    posts="posts"
-    collection_instance = connect(posts)
-    post_id = collection_instance.insert_one(post).inserted_id
 
 def getHistory():
     collection_instance = getTest()
@@ -58,12 +50,6 @@ def getHistory():
     data = json.dumps(data)
     return data
 
-def getData():
-    posts = "posts"
-    collection_instance = connect(posts)
-    data = list(collection_instance.find({"deviceName": "mario"}))
-    # print(data)
-    return json.dumps(data)
 
 def login(data):
     users="users"
@@ -158,6 +144,7 @@ def getMainMeasureDataReturn(data):
 ###########################################################################################################
 # Main Measure components
 
+
 def getDocuments(start,end,collection):
     return list(collection.find(({ 'rxInfo.0.time':{'$gt':start, '$lt':end}})))
 
@@ -179,15 +166,38 @@ def getMainMeasureData(data):
             l=getDocuments(data['startDate_NoAck'],data['endDate_NoAck'],collection)
         else:
             l=getDocuments(data['startDate_Red'],data['endDate_Red'],collection)
-        l = getFcnt(l)
         TotalFcnt.append(l)
     return TotalFcnt
 
 def treatLists(l):
     ll=[]
+    lll=[]
+    llll=[]
+    dict={}
     for sublist in l:
+        lll.append((get_packet_count(sublist)))
+        llll.append(repetition(sublist))
+    for sublist in l:
+        sublist= getFcnt(sublist)
         ll.append(getStats(createBatches(sublist)))
-    return ll
+    dict['stats']=ll
+    dict['count']=lll
+    dict['repetition']=llll
+    return dict
+
+def get_packet_count(l):
+    res= {}
+    res['totalReceived'] = len(l)
+    return res
+
+def repetition(l):
+    j=0
+    count=0
+    while (j < len(l)):
+        count=count+int(base64.b64decode(l[j]['data']).decode('utf-8'))
+        j += 1
+    return count
+
 
 def createBatches(l):
     dicto=[]

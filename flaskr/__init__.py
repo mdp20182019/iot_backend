@@ -30,11 +30,6 @@ def create_app(test_config=None):
         pass
 
     # a simple page that says hello
-    @app.route('/send')
-    def hello():
-        db.sendData()
-        data={"Message": "Success"}
-        return jsonify(data)
 
     @app.route('/login', methods=['POST'])
     def login():
@@ -46,10 +41,6 @@ def create_app(test_config=None):
         return jsonify(result)
 
 
-    @app.route('/getdata')
-    def getdata():
-        db.get_documents("mesureAck100")
-        return "ok"
 
     @app.route('/createMainMeasure', methods=['POST'])
     def createMainMeasure():
